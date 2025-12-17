@@ -96,4 +96,38 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 {
 //add your solution here!
 
+/*
+	1) Check if we are even on the board 
+	2) Append the current char to string_word
+	3)If word is not a prefiux, stop the recurssion 
+	4) go to the next poision 
+	5) If we cant coninue by here then we have a valid word->insertto result
+	6)return if there is a longer word
+
+
+
+*/
+
+	if( r >= board.size() || c >= board.size()){
+		return false;
+	}
+	word.push_back(board[r][c]);
+
+	if(dict.find(word) == dict.end() && prefix.find(word) == prefix.end()){ //eterm
+		return false;
+	}
+
+	bool longerWord = boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc);
+  
+
+	bool endOfPrefix = false;
+	//gg go next 
+	if(dict.find(word)!= dict.end()){
+		if(!longerWord){
+			result.insert(word);
+		}
+		endOfPrefix = true;
+	}
+	return longerWord || endOfPrefix;
+
 }

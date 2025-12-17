@@ -44,5 +44,82 @@ int main()
     }
     ht.insert({"hi7",17});
     cout << "size: " << ht.size() << endl;
+
+
+
+
+    cout <<"====\n\n\n=====MYTESTS=====\n\n\n=====" << '\n';
+
+    cout <<"Inserting duplicates" <<endl;
+    HashTable<string,int,DoubleHashProber<string,MyStringHash>> ht1(0.7,dh);
+    
+    ht1.insert({"dup", 1});
+    ht1.insert({"dup", 99}); //update not insert
+
+    cout << "dup val: " << ht1["dup"] << " ::: shoulder be 99" << endl;
+    cout << "size: " << ht1.size() << "::: shoulde be 1" <<endl;
+
+
+
+
+    cout << "\n\n\n\n===================\nRemoving missing Keys " << endl;
+    HashTable<string,int,DoubleHashProber<string,MyStringHash>> ht2(0.7,dh);
+
+    ht2.insert({"a", 1});
+    ht2.remove("nothing");
+
+    cout <<"size:: " << ht2.size() << "::::shoulder be 1"<< endl;
+
+    cout <<"\n\n\n\n\n========\n\n Resize Test \n\n ========\n" << endl;
+        HashTable<string,int,DoubleHashProber<string,MyStringHash>> ht4(0.4,dh);
+
+    
+    for(int i = 0; i < 20; ++i){
+        ht4.insert({"k" + to_string(i), i});
+    }
+    bool ok = true;
+    for(int i = 0; i <20; ++i){
+        auto p = ht4.find("k" + to_string(i));
+        if(p == nullptr || p->second != i){
+            ok = false;
+        }
+
+    }
+
+    cout << "RESIZEWORKED?" << (ok ? "YES" : "NO") << endl;
+    cout <<"size: " << ht4.size() << " ;; ; ;; SHOULDBE20" <<endl;
+
+    cout << "\n\n\n==========\nDelete resizen\n\n\n====" <<endl;
+    HashTable<string,int,DoubleHashProber<string,MyStringHash>> ht5(0.3,dh);
+
+    for(int i =0; i <15; i++){
+        ht5.insert({"r"+to_string(i),i});
+    }
+
+    ht5.remove("r3");
+    ht5.remove("r7");
+    ht5.remove("r11");
+    
+    ht5.insert({"trigger", 100});
+
+    cout << "find r3" << (ht5.find("r3") == nullptr ? "nullptr": "found")<<endl;
+    cout << "find r7" << (ht5.find("r7") == nullptr ? "nullptr": "found")<<endl;
+    cout << "find r111" << (ht5.find("r11") == nullptr ? "nullptr": "found")<<endl;
+    cout << "triggere::: " << ht5["trigger"] << endl;
+
+
+
+    cout << "\n\n\n======PROBING\n\n\n\n\n"<< endl;
+    HashTable<string,int,LinearProber<string>> ht6(0.99);
+    try {
+        for(int i = 0; i < 11; ++i){
+            ht6.insert({"p"+to_string(i),i});
+        }
+        cout << "inserted without failing WORKEWDDDDD" <<endl;
+
+    }catch(const logic_error& e){
+        cout <<"Dumbahh this shit did not work youre cooked gng" << e.what() << endl;
+    }
+
     return 0;
 }
